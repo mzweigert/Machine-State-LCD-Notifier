@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import machine_state_info
 import time
+import schedule
 
 GPIO_PIN = 7
 
@@ -12,7 +13,10 @@ BACKLIGHT_ON = False
 IDDLE_TIME = 0
 machine_state_info.lcd.backlight_off()
 
+schedule.every(1).minutes.do(machine_state_info.refresh)
+
 while True:
+       schedule.run_pending()
        time.sleep(0.5)
        MOVE_DETECTED = GPIO.input(GPIO_PIN) == 1
       
